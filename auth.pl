@@ -26,7 +26,7 @@ return ($dbh);
 
 sub oracle_query_one{
     my ($oradb,$func,$login,$realm)=@_;
-## use $array=oracle_query_one ($dbh, $func, $user, $realm);
+### use $array=oracle_query_one ($dbh, $func, $user, $realm);
     my $sql = qq{
 	    BEGIN
 	        $func(?,?,?,?);
@@ -139,7 +139,7 @@ sub sigtrap(){ # KILL handler
 my $cfg = new Config::Simple('config.conf');
 
 my $oradb;
-#$oradb=oracle_connect($cfg->param('oracle_login'),$cfg->param('oracle_password'),$cfg->param('oracle_server'));
+$oradb=oracle_connect($cfg->param('oracle_login'),$cfg->param('oracle_password'),$cfg->param('oracle_server'));
 my $mydb=mysql_connect($cfg->param('mysql_login'),
 			$cfg->param('mysql_password').'',
 			$cfg->param('mysql_server'),
@@ -182,7 +182,7 @@ if ($cache[0]==1) { # try search cache
 elsif ($cache[0]>10){ # if cache not found or expire try direct request
     if ($DEBUG){open(F,"|/usr/bin/logger Request to ORACLE");close(F);}
 
-    @hash=oracle_query_one_test($oradb, $cfg->param('oracle_func'),$input[1],$input[3]);
+    @hash=oracle_query_one($oradb, $cfg->param('oracle_func'),$input[1],$input[3]);
     if ($hash[0]==1) { # update cache
 	mysql_cache($mydb,$input[1],$hash[1],$hash[0]);
     }
